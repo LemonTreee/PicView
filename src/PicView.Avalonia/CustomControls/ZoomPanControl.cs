@@ -246,8 +246,9 @@ public class ZoomPanControl : Decorator
             return;
         }
 
-        // Panning shouldn't happen when moving the window by holding shift
-        if (e.KeyModifiers == KeyModifiers.Shift)
+        // Without Shift the drag moves the window (handled by MainView);
+        // only Shift + drag pans the image.
+        if (e.KeyModifiers != KeyModifiers.Shift)
         {
             return;
         }
@@ -270,6 +271,7 @@ public class ZoomPanControl : Decorator
         _isPanning = true;
         _panStartPointer = p;
         _panStartTranslate = new Point(TranslateX, TranslateY);
+        e.Handled = true;
         e.Pointer.Capture(this);
     }
 
@@ -280,8 +282,8 @@ public class ZoomPanControl : Decorator
             return;
         }
 
-        // Panning shouldn't happen when moving the window by holding shift
-        if (e.KeyModifiers == KeyModifiers.Shift)
+        // Only pan while Shift is held; otherwise the drag moves the window
+        if (e.KeyModifiers != KeyModifiers.Shift)
         {
             return;
         }
