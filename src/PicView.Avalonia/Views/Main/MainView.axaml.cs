@@ -157,12 +157,9 @@ public partial class MainView : UserControl
 
         DragAndDropManager.RemoveDragDropView(mainWindow);
         
-        if (e.Properties.IsLeftButtonPressed)
+        if (e.Properties.IsLeftButtonPressed && !CropManager.IsCropping(mainWindow))
         {
-            if (e.KeyModifiers.HasFlag(KeyModifiers.Shift) && !CropManager.IsCropping(mainWindow))
-            {
-                WindowFunctions.WindowDragBehavior(mainWindow, e);
-            }
+            WindowFunctions.WindowDragBehavior(mainWindow, e);
         }
         else if (e.Properties.IsRightButtonPressed)
         {
