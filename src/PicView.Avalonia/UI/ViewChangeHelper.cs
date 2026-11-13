@@ -22,7 +22,7 @@ public static class ViewChangeHelper
             {
                 disposable.Dispose();
             }
-            tab.CurrentView.Value = new StartUpMenu();
+            tab.CurrentView.Value = new ImageViewer();
         });
         vm.IsLoadingIndicatorShown.Value = false;
     }
