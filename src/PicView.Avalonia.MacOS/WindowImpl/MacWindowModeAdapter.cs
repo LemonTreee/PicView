@@ -19,6 +19,19 @@ public sealed class MacWindowModeAdapter : IWindowModeAdapter
 
     public void EnterNativeState(MainWindow window, WindowModeState state)
     {
+        if (state.Mode is WindowMode.Fullscreen)
+        {
+            WindowModeSwitcher.SetNativeState(window, state.Mode);
+
+            // macOS makes the native title bar opaque when entering full screen, which shows as
+            // an empty white strip because the interface is hidden there. Toggling the extended
+            // client area off and on re-applies the transparent title bar (SetExtendClientArea
+            // sets titlebarAppearsTransparent=true), removing the strip.
+            window.ExtendClientAreaToDecorationsHint = false;
+            window.ExtendClientAreaToDecorationsHint = true;
+            return;
+        }
+
         if (state.Mode is not WindowMode.Normal)
         {
             WindowModeSwitcher.SetNativeState(window, state.Mode);
