@@ -157,5 +157,6 @@ public static class ToggleUIVisibility
 
         vm.WindowTabs.ActiveTab.CurrentValue.Hoverbar.IsHoverbarVisible.Value = Settings.UIProperties.ShowHoverNavigationBar;
         vm.BottombarHeight.Value = 0;
+        vm.TitlebarHeight.Value = 0;
     }
 }
