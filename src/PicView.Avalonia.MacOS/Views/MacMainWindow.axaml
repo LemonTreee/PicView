@@ -5,8 +5,6 @@
     MinWidth="{CompiledBinding WindowMinWidth}"
     Title="{CompiledBinding WindowTabs.ActiveTab.Value.Titles.WindowTitle,
                             FallbackValue=''}"
-    Background="{CompiledBinding GlobalSettings.ImageBackground.Value,
-                                 Mode=OneWay}"
     x:Class="PicView.Avalonia.MacOS.Views.MacMainWindow"
     x:DataType="viewModels:MainWindowViewModel"
     xmlns="https://github.com/avaloniaui"
