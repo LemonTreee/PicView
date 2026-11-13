@@ -73,13 +73,7 @@ public sealed class MainWindowLifecycle
         var vm = ViewModelOf(window);
         var settingUp = ApplyWindowSettingsAsync(vm, isAppStart: false);
         WindowFunctions.HandleWindowScalingMode(window, isAppStart: false);
-        vm.WindowTabs.ActiveTab.Value.CurrentView.Value = new StartUpMenu
-        {
-            Buttons =
-            {
-                DataContext = vm.WindowTabs.ActiveTab.CurrentValue
-            }
-        };
+        vm.WindowTabs.ActiveTab.Value.CurrentView.Value = new ImageViewer();
         window.Show();
         await Task.WhenAll(settingUp, SetUpShownWindow(window, isAppStart: false)).ConfigureAwait(true);
         return window;
@@ -160,13 +154,7 @@ public sealed class MainWindowLifecycle
         {
             var vm = ViewModelOf(window);
             var tab = vm.WindowTabs.ActiveTab.CurrentValue;
-            tab.CurrentView.Value = new StartUpMenu
-            {
-                Buttons =
-                {
-                    DataContext = tab
-                }
-            };
+            tab.CurrentView.Value = new ImageViewer();
             window.Show();
             if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
