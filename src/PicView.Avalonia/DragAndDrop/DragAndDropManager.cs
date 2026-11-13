@@ -141,7 +141,7 @@ public static class DragAndDropManager
             var currentView = tab.CurrentView;
             if (currentView.CurrentValue is ImageViewer)
             {
-                currentView.Value = new StartUpMenu();
+                currentView.Value = new ImageViewer();
             }
         });
     }
