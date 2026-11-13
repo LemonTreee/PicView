@@ -89,7 +89,7 @@ public static class SourceOpener
                 ShowError(vm, result);
                 if (wasStartUpMenu)
                 {
-                    tab.CurrentView.Value = new StartUpMenu();
+                    tab.CurrentView.Value = new ImageViewer();
                 }
             });
             return result;
