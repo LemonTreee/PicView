@@ -40,27 +40,41 @@ public partial class MacMainWindow : MainWindow
                 return;
             }
             
-            // Hide macOS traffic lights buttons when interface is hidden
-            Observable.EveryValueChanged(vm, x => x.IsTopToolbarShown.Value, FrameProvider).Subscribe(shown =>
+            // Keep the window borderless whenever the top toolbar is hidden. In full screen the
+            // interface is hidden (see InterfaceVisibility.For) and macOS forces an opaque native
+            // title bar, so going borderless there avoids the empty white strip at the top; the
+            // transparent, extended title bar is re-applied by MacWindowModeAdapter on entering
+            // full screen.
+            void UpdateDecorations()
             {
-                if (vm.IsFullscreen.Value)
+                WindowDecorations = vm.IsFullscreen.Value || !vm.IsTopToolbarShown.Value
+                    ? WindowDecorations.None
+                    : WindowDecorations.Full;
+            }
+
+            Observable.EveryValueChanged(vm, x => x.IsTopToolbarShown.Value, FrameProvider)
+                .Subscribe(_ => UpdateDecorations(), static result =>
                 {
-                    WindowDecorations = WindowDecorations.Full;
-                }
-                else
-                {
-                    WindowDecorations = shown ? WindowDecorations.Full : WindowDecorations.None;
-                }
-            }, static result =>
-            {
 #if DEBUG
-                if (result is { IsFailure: true, Exception: not null })
-                {
-                    DebugHelper.LogDebug(nameof(MacMainWindow), nameof(vm.IsTopToolbarShown), result.Exception);
-                }
+                    if (result is { IsFailure: true, Exception: not null })
+                    {
+                        DebugHelper.LogDebug(nameof(MacMainWindow), nameof(vm.IsTopToolbarShown), result.Exception);
+                    }
 #endif
-            })
-            .AddTo(Disposables);
+                })
+                .AddTo(Disposables);
+
+            Observable.EveryValueChanged(vm, x => x.IsFullscreen.Value, FrameProvider)
+                .Subscribe(_ => UpdateDecorations(), static result =>
+                {
+#if DEBUG
+                    if (result is { IsFailure: true, Exception: not null })
+                    {
+                        DebugHelper.LogDebug(nameof(MacMainWindow), nameof(vm.IsFullscreen), result.Exception);
+                    }
+#endif
+                })
+                .AddTo(Disposables);
         };
     }
 
