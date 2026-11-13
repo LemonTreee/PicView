@@ -40,17 +40,12 @@ public partial class MacMainWindow : MainWindow
                 return;
             }
             
-            // Hide macOS traffic lights buttons when interface is hidden
+            // Hide macOS traffic lights buttons when interface is hidden, including in fullscreen.
+            // Keeping full decorations while fullscreen leaves an empty white title bar strip that
+            // macOS slides in when the pointer reaches the top edge of the screen.
             Observable.EveryValueChanged(vm, x => x.IsTopToolbarShown.CurrentValue, FrameProvider).Subscribe(shown =>
             {
-                if (vm.IsFullscreen.Value)
-                {
-                    WindowDecorations = WindowDecorations.Full;
-                }
-                else
-                {
-                    WindowDecorations = shown ? WindowDecorations.Full : WindowDecorations.None;
-                }
+                WindowDecorations = shown ? WindowDecorations.Full : WindowDecorations.None;
             }, static result =>
             {
 #if DEBUG
